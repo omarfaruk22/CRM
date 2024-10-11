@@ -1,0 +1,1 @@
+Single group article 

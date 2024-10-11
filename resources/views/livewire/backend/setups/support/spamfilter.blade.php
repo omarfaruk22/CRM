@@ -1,0 +1,485 @@
+<div>
+    <div>
+
+        {{-- Add Spam Filter modal start  --}}
+        <div wire:ignore.self class="modal fade" id="spamModal" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-md">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <div class="">
+                            <h6 class="modal-title">Add Spam Filter</h6>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="" wire:submit="store">
+                        <div class="modal-body">
+                            <div class="form">
+                                <div class="row">
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label"><span style="color: red">*</span>Type</label>
+                                        <select wire:model="type"
+                                            class="form-select form-select-sm @error('type') is-invalid @enderror"
+                                            aria-label=".form-select-sm example">
+                                            <option></option>
+                                            <option value="sender">Senders</option>
+                                            <option value="subject">subjects</option>
+                                            <option value="phrase">pharses</option>
+                                        </select>
+                                        @error('type')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label"><span style="color: red">*</span>Content</label>
+                                        <textarea wire:model="value" type="text" name="" id=""
+                                            class="form-control @error('value') is-invalid @enderror"></textarea>
+                                        @error('value')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{-- Add Spam Filter modal end  --}}
+
+
+        {{-- Edit Spam Filter modal start  --}}
+        <div class="modal fade" id="edit" wire:ignore.self tabindex="-1" style="display: none;"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-md">
+                <div class="modal-content">
+
+                    <form action="" wire:submit="update">
+
+                        <div class="modal-header">
+                            <div class="">
+                                <h6 class="modal-title">Edit Spam Filter</h6>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label"><span style="color: red">*</span>Type</label>
+                                    <select wire:model="type"
+                                        class="form-select form-select-sm @error('type') is-invalid @enderror"
+                                        aria-label=".form-select-sm example">
+                                        <option value="sender">Senders</option>
+                                        <option value="subject">subjects</option>
+                                        <option value="phrase">phrases</option>
+                                    </select>
+                                    @error('type')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label"><span style="color: red">*</span>Content</label>
+                                    <textarea wire:model="value" type="text" name="value" id=""
+                                        class="form-control @error('value') is-invalid @enderror"></textarea>
+                                    @error('value')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{-- Edit Spam Filter modal end  --}}
+
+
+        {{-- Delete modal start  --}}
+        <div wire:ignore.self class="modal fade" id="delete" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="text-end">
+                        <button type="button" class="btn-close m-3" data-bs-dismiss="modal" wire:click="closeModal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <h3>Are you sure?</h3>
+                        <p>Delete this data</p>
+                    </div>
+
+                    <form wire:submit="destroy">
+                        <div class="text-center my-4">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModal"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Confirm</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        {{-- Delete modal end  --}}
+
+
+        {{-- List page start  --}}
+        <div class="row">
+
+            <div class="col mb-3">
+                <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal"
+                    data-bs-target="#spamModal">+ New Spam Filter</button>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col">
+
+                            {{-- Buttons start  --}}
+                            <ul class="nav nav-pills mb-3" role="tablist">
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" data-bs-toggle="pill" href="#primary-pills-home"
+                                        role="tab" aria-selected="true">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon"></div>
+                                            <div class="tab-title">Blocked Senders</div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="pill" href="#primary-pills-profile"
+                                        role="tab" aria-selected="false" tabindex="-1">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon"></div>
+                                            <div class="tab-title">Blocked Subjects</div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="pill" href="#primary-pills-contact"
+                                        role="tab" aria-selected="false" tabindex="-1">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon"></div>
+                                            <div class="tab-title">Blocked Phrases</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            {{-- Buttons end  --}}
+
+                            <hr>
+                            <div class="tab-content" id="pills-tabContent">
+
+                                {{-- Sender start here  --}}
+                                <div class="tab-pane fade active show" id="primary-pills-home" role="tabpanel">
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <div class="me-2 d-flex">
+                                            <div class="me-2">
+                                                <select class="form-select" wire:model.live="size" name="size">
+                                                    <option value="5">5</option>
+                                                    <option selected value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            <div class="me-2">
+                                                <div class="col">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-outline-secondary dropdown-toggle"
+                                                            type="button" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">Export</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="#">Pdf</a>
+                                                            </li>
+                                                            <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <a href="{{ route('support.spam_filter.index') }}" type="button"
+                                                    class="btn btn-outline-secondary">Reset</a>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="d-flex">
+                                                <div class="search-box">
+                                                    <input type="text" wire:model.live="search"
+                                                        class="form-control" id="searchProductList"
+                                                        autocomplete="off" placeholder="Search Users...">
+                                                    <i class="ri-search-line search-icon"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example" class="table table-striped table-bordered"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#Sl</th>
+                                                    <th>Content</th>
+                                                    <th>Created By</th>
+                                                    <th>Updated By</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($senders as $sender)
+                                                    <tr>
+                                                        <td>{{ $senders->firstItem() + $loop->index }}</td>
+                                                        <td>{{ $sender->value }}</td>
+                                                        <td>{{ $sender->created_by }}</td>
+                                                        <td>{{ $sender->updated_by }}</td>
+                                                        <td>
+                                                            <a href="javascript:void(0);"
+                                                                wire:click="edit({{ $sender->id }})"
+                                                                data-bs-toggle="modal" data-bs-target="#edit">
+                                                                <span class="bx bx-edit fs-5"></span>
+                                                            </a>
+                                                            <a href="javascript:void(0);"
+                                                                wire:click="delete({{ $sender->id }})"class="text-danger"
+                                                                data-bs-toggle="modal" data-bs-target="#delete">
+                                                                <span class="bx bx-trash text-danger fs-5"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">
+                                                            data Not Found
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        <div>{{ $senders->links('vendor.livewire.bootstrap') }}</div>
+                                    </div>
+                                </div>
+                                {{-- Sender end here  --}}
+
+                                {{-- Subject start here  --}}
+                                <div class="tab-pane fade" id="primary-pills-profile" role="tabpanel">
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <div class="me-2 d-flex">
+                                            <div class="me-2">
+                                                <select class="form-select" wire:model.live="size" name="size">
+                                                    <option value="5">5</option>
+                                                    <option selected value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            <div class="me-2">
+                                                <div class="col">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-outline-secondary dropdown-toggle"
+                                                            type="button" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">Export</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="#">Pdf</a>
+                                                            </li>
+                                                            <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <a href="{{ route('support.spam_filter.index') }}" type="button"
+                                                    class="btn btn-outline-secondary">Reset</a>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="d-flex">
+                                                <div class="search-box">
+                                                    <input type="text" wire:model.live="search"
+                                                        class="form-control" id="searchProductList"
+                                                        autocomplete="off" placeholder="Search Users...">
+                                                    <i class="ri-search-line search-icon"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example" class="table table-striped table-bordered"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#Sl</th>
+                                                    <th>Content</th>
+                                                    <th>Created By</th>
+                                                    <th>Updated By</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($subjects as $subject)
+                                                    <tr>
+                                                        <td>{{ $subjects->firstItem() + $loop->index }}</td>
+                                                        <td>{{ $subject->value }}</td>
+                                                        <td>{{ $subject->created_by }}</td>
+                                                        <td>{{ $subject->updated_by }}</td>
+                                                        <td>
+                                                            <a href="javascript:void(0);"
+                                                                wire:click="edit({{ $subject->id }})"
+                                                                data-bs-toggle="modal" data-bs-target="#edit">
+                                                                <span class="bx bx-edit fs-5"></span>
+                                                            </a>
+                                                            <a href="javascript:void(0);"
+                                                                wire:click="delete({{ $subject->id }})"class="text-danger"
+                                                                data-bs-toggle="modal" data-bs-target="#delete">
+                                                                <span class="bx bx-trash text-danger fs-5"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">
+                                                            data Not Found
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        <div>{{ $subjects->links('vendor.livewire.bootstrap') }}</div>
+                                    </div>
+                                </div>
+                                {{-- Subject end here  --}}
+
+                                {{-- Phrases start here  --}}
+                                <div class="tab-pane fade" id="primary-pills-contact" role="tabpanel">
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <div class="me-2 d-flex">
+                                            <div class="me-2">
+                                                <select class="form-select" wire:model.live="size" name="size">
+                                                    <option value="5">5</option>
+                                                    <option selected value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            <div class="me-2">
+                                                <div class="col">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-outline-secondary dropdown-toggle"
+                                                            type="button" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">Export</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="#">Pdf</a>
+                                                            </li>
+                                                            <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <a href="{{ route('support.spam_filter.index') }}" type="button"
+                                                    class="btn btn-outline-secondary">Reset</a>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="d-flex">
+                                                <div class="search-box">
+                                                    <input type="text" wire:model.live="search"
+                                                        class="form-control" id="searchProductList"
+                                                        autocomplete="off" placeholder="Search Users...">
+                                                    <i class="ri-search-line search-icon"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example" class="table table-striped table-bordered"
+                                            style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#Sl</th>
+                                                    <th>Content</th>
+                                                    <th>Created By</th>
+                                                    <th>Updated By</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($phrases as $phrase)
+                                                    <tr>
+                                                        <td>{{ $phrases->firstItem() + $loop->index }}</td>
+                                                        <td>{{ $phrase->value }}</td>
+                                                        <td>{{ $phrase->created_by }}</td>
+                                                        <td>{{ $phrase->updated_by }}</td>
+                                                        <td>
+                                                            <a href="javascript:void(0);"
+                                                                wire:click="edit({{ $phrase->id }})"
+                                                                data-bs-toggle="modal" data-bs-target="#edit">
+                                                                <span class="bx bx-edit fs-5"></span>
+                                                            </a>
+                                                            <a href="javascript:void(0);"
+                                                                wire:click="delete({{ $phrase->id }})"class="text-danger"
+                                                                data-bs-toggle="modal" data-bs-target="#delete">
+                                                                <span class="bx bx-trash text-danger fs-5"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">
+                                                            data Not Found
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        <div>{{ $phrases->links('vendor.livewire.bootstrap') }}</div>
+                                    </div>
+                                </div>
+                                {{-- Phrases end here  --}}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- List page start  --}}
+
+    </div>
+
+    @push('js')
+        <script>
+            document.addEventListener('livewire:initialized', () => {
+                @this.on('close-modal', (event) => {
+                    $('#edit').modal('hide');
+                    $('#create').modal('hide');
+                });
+            });
+        </script>
+    @endpush
+
+</div>

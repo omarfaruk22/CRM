@@ -1,0 +1,44 @@
+ {{-- <script>
+
+    jQuery(document).ready(function(){
+    jQuery(document).on('click', '.contactEdit',function(e){
+        e.preventDefault();
+
+        var contId=$(this).data('id');
+        $.ajax({
+            url:'{{ route('customers.profile.contact.edit', ['contId' => $data->id]) }}',
+            type:'GET',
+            dataType:'json',
+            success:function(result){
+               console.log(result);
+                // jQuery("#cat_id").val(result.data.id);
+
+                // jQuery("#name").val(result.data.name);
+                // jQuery(".nav_status").val(result.data.nav_status);
+                // if(result.data.nav_status==1){
+                //     jQuery(".navsta").text("Active");
+                // }
+                // else if(result.data.nav_status==0){
+                //     jQuery(".navsta").text("Inactive");
+                // }
+                // else{
+                //     jQuery(".navsta").text("Err");
+                // }
+            
+                
+                // jQuery(".sts").val(result.data.status);
+                // if(result.data.status==1){
+                //     jQuery(".sts").text("Active");
+                // }
+                // else if(result.data.status==2){
+                //     jQuery(".sts").text("Inactive");
+                // }
+                // else{
+                //     jQuery(".sts").text("Err");
+                // }
+                
+            }
+        });
+    });
+  });
+    </script> --}}
